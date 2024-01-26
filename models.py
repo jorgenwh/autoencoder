@@ -107,54 +107,9 @@ class ConvAutoEncoder(nn.Module):
         return x
 
 
-class ConvUpscaleEncoder(nn.Module):
-    def __init__(self):
-        super(ConvUpscaleEncoder, self).__init__()
-        self.conv1 = nn.Conv2d(1, 128, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)
-        self.conv3 = nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=1)
-
-    def forward(self, x):
-        ##print(x.shape)
-        x = self.conv1(x)
-        x = F.relu(x)
-        ##print(x.shape)
-        x = self.conv2(x)
-        x = F.relu(x)
-        ##print(x.shape)
-        x = self.conv3(x)
-        x = F.relu(x)
-        ##print(x.shape)
-        return x
-
-
-class ConvUpscaleDecoder(nn.Module):
-    def __init__(self):
-        super(ConvUpscaleDecoder, self).__init__()
-        self.conv1 = nn.ConvTranspose2d(512, 256, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
-        self.conv2 = nn.ConvTranspose2d(256, 128, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
-        self.conv3 = nn.ConvTranspose2d(128, 1, kernel_size=3, stride=2, padding=1, output_padding=1, dilation=1)
-
-    def forward(self, x):
-        ##print(x.shape)
-        x = self.conv1(x)
-        x = F.relu(x)
-        ##print(x.shape)
-        x = self.conv2(x)
-        x = F.relu(x)
-        ##print(x.shape)
-        x = self.conv3(x)
-        x = F.sigmoid(x)
-        ##print(x.shape)
-        return x
-
-
 class ConvUpscaleAutoEncoder(nn.Module):
     def __init__(self):
         super(ConvUpscaleAutoEncoder, self).__init__()
-        #self.encoder = ConvUpscaleEncoder()
-        #self.decoder = ConvUpscaleDecoder()
-
         self.conv1 = nn.ConvTranspose2d(1, 32, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
         self.conv2 = nn.ConvTranspose2d(32, 64, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
         self.conv3 = nn.ConvTranspose2d(64, 128, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
@@ -165,41 +120,23 @@ class ConvUpscaleAutoEncoder(nn.Module):
         self.conv8 = nn.ConvTranspose2d(128, 64, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
         self.conv9 = nn.ConvTranspose2d(64, 1, kernel_size=3, stride=1, padding=0, output_padding=0, dilation=1)
 
-    #def encode(self, x):
-        #return self.encoder(x)
-
-    #def decode(self, x):
-        #return self.decoder(x)
-
     def forward(self, x):
-        #x = self.encode(x)
-        #x = self.decode(x)
-        #print(x.shape)
         x = self.conv1(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv2(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv3(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv4(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv5(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv6(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv7(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv8(x)
         x = F.relu(x)
-        #print(x.shape)
         x = self.conv9(x)
         x = F.sigmoid(x)
-        #print(x.shape)
         return x
